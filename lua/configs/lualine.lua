@@ -45,11 +45,12 @@ function M.config()
         disabled_filetypes = { "NvimTree", "neo-tree", "dashboard", "Outline" },
         component_separators = "",
         section_separators = "",
-        globalstatus = true,
+        globalstatus = false,
       },
       sections = {
-        lualine_a = { spacer },
-        lualine_b = {},
+        -- Buffer number.
+        lualine_a = { spacer, '%-3n' },
+        lualine_b = { 'filename', 'encoding', 'fileformat' },
         lualine_c = {
           {
             "branch",
@@ -120,12 +121,12 @@ function M.config()
         lualine_z = { spacer },
       },
       inactive_sections = {
-        lualine_a = {},
+        lualine_a = { '%-3n' },
         lualine_b = {},
+        lualine_c = { 'filename', 'encoding', 'fileformat' },
+        lualine_x = { 'location' },
         lualine_y = {},
         lualine_z = {},
-        lualine_c = {},
-        lualine_x = {},
       },
     }))
   end

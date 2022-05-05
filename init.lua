@@ -1,5 +1,3 @@
-vim.opt.rtp:append(vim.fn.stdpath "config" .. "/../astronvim")
-
 local impatient_ok, impatient = pcall(require, "impatient")
 if impatient_ok then
   impatient.enable_profile()

@@ -1,8 +1,7 @@
 local M = {}
 
 local supported_configs = {
-  vim.fn.stdpath "config",
-  vim.fn.stdpath "config" .. "/../astronvim",
+  vim.fn.stdpath "config"
 }
 
 local g = vim.g
@@ -66,7 +65,9 @@ local function user_setting_table(module)
 end
 
 local function load_options(module, default)
-  local user_settings = load_module_file("user." .. module)
+  -- Do not check user settings here.
+  -- local user_settings = load_module_file("user." .. module)
+  local user_settings = nil
   if user_settings == nil then
     user_settings = user_setting_table(module)
   end
@@ -76,7 +77,7 @@ local function load_options(module, default)
   return default
 end
 
-M.base_notification = { title = "AstroNvim" }
+M.base_notification = { title = "TNVim" }
 
 function M.bootstrap()
   local fn = vim.fn
@@ -90,7 +91,7 @@ function M.bootstrap()
       "https://github.com/wbthomason/packer.nvim",
       install_path,
     }
-    print "Cloning packer...\nSetup AstroNvim"
+    print "Cloning packer...\nSetup TNVim"
     vim.cmd "packadd packer.nvim"
   end
 end
@@ -223,6 +224,89 @@ function M.update()
       end,
     })
     :sync()
+end
+
+function M.get_os()
+  local sysname = vim.loop.os_uname().sysname
+  if sysname == "Windows_NT" then
+    return "win"
+  end
+  return "linux"
+end
+
+function M.install_scoop()
+  if M.get_os() ~= "win" then
+    return
+  end
+
+  local Job = require "plenary.job"
+  Job
+    :new({
+      command = "powershell.exe",
+      args = { "-noexit", "-Command", "iwr -useb get.scoop.sh | iex" },
+      cwd = vim.fn.stdpath "config",
+      on_exit = function(_, return_val)
+        if return_val == 0 then
+          vim.notify("Scoop installed.", "info", M.base_notification)
+        else
+          vim.notify("Scoop failed to install. Run 'iwr -useb get.scoop.sh | iex' manually.",
+                     "error",
+                     M.base_notification)
+        end
+      end,
+    })
+    :sync()
+end
+
+function M.install_utils()
+  if M.get_os() ~= "win" then
+    return
+  end
+
+  local Job = require "plenary.job"
+  Job
+    :new({
+      command = "scoop.exe",
+      args = { "install", "global", "ripgrep", "ctags" },
+      cwd = vim.fn.stdpath "config",
+      on_exit = function(_, return_val)
+        if return_val == 0 then
+          vim.notify("Utils installed via Scoop.", "info", M.base_notification)
+        else
+          vim.notify("Utils failed to install.", "error", M.base_notification)
+        end
+      end,
+    })
+    :sync()
+end
+
+function M.get_cword()
+  return vim.call("expand", "<cword>")
+end
+
+function M.get_cwd()
+  return vim.call("getcwd")
+end
+
+function M.set_cwd_to_current_file()
+  local curDir = vim.call("expand", "%:p:h")
+  curDir = vim.call("fnameescape", curDir)
+  vim.cmd("cd " .. curDir)
+  vim.cmd("set path&")
+  vim.cmd("set path+=" .. vim.call("fnameescape", M.get_cwd() .. "/**"))
+  print("CWD -> " .. M.get_cwd() .. " &path -> " .. vim.o.path)
+end
+
+function M.zoom_restore_current_window()
+  if vim.t.zoomed == true then
+    vim.cmd("execute t:zoom_winresetcmd")
+    vim.t.zoomed = false
+  else
+    vim.t.zoom_winresetcmd = vim.call(winrestcmd)
+    vim.cmd("resize")
+    vim.cmd("vertical resize")
+    vim.t.zoomed = true
+  end
 end
 
 return M

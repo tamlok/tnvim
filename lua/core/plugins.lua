@@ -11,8 +11,23 @@ if packer_status_ok then
       "wbthomason/packer.nvim",
     },
 
+    { "sainnhe/edge",
+      config = function()
+        vim.o.background = 'light'
+        vim.g.edge_style = 'default'
+        vim.g.edge_better_performance = true
+        vim.cmd "colorscheme edge"
+      end,
+    },
+
     -- Optimiser
     { "lewis6991/impatient.nvim" },
+
+    { "nathom/filetype.nvim",
+      config = function()
+        require("configs.filetype").config()
+      end,
+    },
 
     -- Lua functions
     { "nvim-lua/plenary.nvim" },
@@ -145,36 +160,12 @@ if packer_status_ok then
       end,
     },
 
-    -- Snippet collection
-    {
-      "rafamadriz/friendly-snippets",
-      after = "nvim-cmp",
-    },
-
-    -- Snippet engine
-    {
-      "L3MON4D3/LuaSnip",
-      after = "friendly-snippets",
-      config = function()
-        require("configs.luasnip").config()
-      end,
-    },
-
     -- Completion engine
     {
       "hrsh7th/nvim-cmp",
       event = "InsertEnter",
       config = function()
         require("configs.cmp").config()
-      end,
-    },
-
-    -- Snippet completion source
-    {
-      "saadparwaiz1/cmp_luasnip",
-      after = "nvim-cmp",
-      config = function()
-        require("core.utils").add_user_cmp_source "luasnip"
       end,
     },
 
@@ -245,32 +236,6 @@ if packer_status_ok then
     {
       "jose-elias-alvarez/null-ls.nvim",
       event = { "BufRead", "BufNewFile" },
-      config = function()
-        local null_ls = require("core.utils").user_plugin_opts "null-ls"
-        if type(null_ls) == "function" then
-          null_ls()
-        end
-      end,
-    },
-
-    -- Fuzzy finder
-    {
-      "nvim-telescope/telescope.nvim",
-      cmd = "Telescope",
-      module = "telescope",
-      config = function()
-        require("configs.telescope").config()
-      end,
-    },
-
-    -- Fuzzy finder syntax support
-    {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      after = "telescope.nvim",
-      run = "make",
-      config = function()
-        require("telescope").load_extension "fzf"
-      end,
     },
 
     -- Git integration
@@ -332,15 +297,6 @@ if packer_status_ok then
       disable = not config.enabled.comment,
     },
 
-    -- Indentation
-    {
-      "lukas-reineke/indent-blankline.nvim",
-      config = function()
-        require("configs.indent-line").config()
-      end,
-      disable = not config.enabled.indent_blankline,
-    },
-
     -- Keymaps popup
     {
       "folke/which-key.nvim",
@@ -350,27 +306,29 @@ if packer_status_ok then
       disable = not config.enabled.which_key,
     },
 
-    -- Smooth scrolling
-    {
-      "karb94/neoscroll.nvim",
-      event = { "BufRead", "BufNewFile" },
-      config = function()
-        require("configs.neoscroll").config()
-      end,
-      disable = not config.enabled.neoscroll,
-    },
-
-    -- Smooth escaping
-    {
-      "max397574/better-escape.nvim",
-      event = { "InsertEnter" },
-      config = function()
-        require("configs.better_escape").config()
-      end,
-    },
-
     -- Get extra JSON schemas
     { "b0o/SchemaStore.nvim" },
+
+    -- Easy movement
+    { "easymotion/vim-easymotion" },
+
+    -- File search, tag search and more
+    {
+      "Yggdroot/LeaderF",
+      run = ":LeaderfInstallCExtension",
+      config = function()
+        require("configs.leaderf").config()
+      end,
+    },
+
+    -- Async run
+    {
+      "skywind3000/asyncrun.vim",
+      cmd = "AsyncRun",
+      config = function()
+        require("configs.asyncrun").config()
+      end,
+    },
   }
 
   packer.startup {

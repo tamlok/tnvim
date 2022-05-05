@@ -1,5 +1,5 @@
-local config = {
 
+local config = {
   colorscheme = "default_theme",
 
   plugins = {
@@ -25,10 +25,8 @@ local config = {
     toggle_term = true,
     comment = true,
     symbols_outline = true,
-    indent_blankline = true,
     dashboard = true,
     which_key = true,
-    neoscroll = true,
     ts_rainbow = true,
     ts_autotag = true,
   },

@@ -6,6 +6,8 @@ local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
 
+local laststatus = vim.opt.laststatus
+
 augroup("packer_user_config", {})
 cmd("BufWritePost", {
   desc = "Auto Compile plugins.lua file",
@@ -46,22 +48,44 @@ if utils.is_available "dashboard-nvim" then
     desc = "Disable statusline for dashboard",
     group = "dashboard_settings",
     pattern = "dashboard",
-    command = "set laststatus=0",
+    command = "let g:old_laststatus = &laststatus | set laststatus=0",
   })
   cmd("BufWinLeave", {
-    desc = "Reenable statusline when leaving dashboard",
+    desc = "Reenable statusline/cursorline when leaving dashboard",
     group = "dashboard_settings",
     pattern = "<buffer>",
-    command = "set laststatus=3",
+    command = "let &laststatus = g:old_laststatus | let &cursorline = g:old_cursorline",
   })
   cmd("BufEnter", {
     desc = "No cursorline on dashboard",
     group = "dashboard_settings",
     pattern = "*",
-    command = "if &ft is 'dashboard' | set nocursorline | endif",
+    command = "if &ft is 'dashboard' | let g:old_cursorline = &cursorline | set nocursorline | endif",
   })
 end
 
-create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
+vim.g.t_last_active_tab = 1
+
+augroup("buffer_cmd", {})
+-- Remember last-active tab
+cmd("TabLeave", {
+  desc = "Record last-active tab",
+  group = "buffer_cmd",
+  command = "let g:t_last_active_tab = tabpagenr()",
+})
+-- Auto enable/disable input method when entering/leaving insert mode
+cmd("InsertLeave", {
+  desc = "Disable input method",
+  group = "buffer_cmd",
+  command = "set imdisable | set iminsert=0",
+})
+cmd("InsertEnter", {
+  desc = "Enable input method",
+  group = "buffer_cmd",
+  command = "set noimdisable | set iminsert=0",
+})
+
+create_command("TVScoop", require("core.utils").install_scoop, { desc = "Install Scoop on Windows" })
+create_command("TVInstallUtils", require("core.utils").install_utils, { desc = "Install utils like ripgrep/ctags/global" })
 
 return M

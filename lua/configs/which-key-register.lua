@@ -14,17 +14,46 @@ if status_ok then
   }
 
   local mappings = {
-    ["w"] = { "<cmd>w<CR>", "Save" },
-    ["q"] = { "<cmd>q<CR>", "Quit" },
-    ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+    ["space"] = { '<cmd>"+yiw<CR>', "Yank the word under cursor to clipboard" },
 
-    p = {
-      name = "Packer",
-      c = { "<cmd>PackerCompile<cr>", "Compile" },
-      i = { "<cmd>PackerInstall<cr>", "Install" },
-      s = { "<cmd>PackerSync<cr>", "Sync" },
-      S = { "<cmd>PackerStatus<cr>", "Status" },
-      u = { "<cmd>PackerUpdate<cr>", "Update" },
+    -- Tabs
+    ["0"] = {
+      function()
+        vim.cmd("tabn " .. vim.g.t_last_active_tab)
+      end,
+      "Alternate between current and last active tab"
+    },
+    ["1"] = { "<esc>1gt", "Go to tab 1" },
+    ["2"] = { "<esc>2gt", "Go to tab 2" },
+    ["3"] = { "<esc>3gt", "Go to tab 3" },
+    ["4"] = { "<esc>4gt", "Go to tab 4" },
+    ["5"] = { "<esc>5gt", "Go to tab 5" },
+    ["6"] = { "<esc>6gt", "Go to tab 6" },
+    ["7"] = { "<esc>7gt", "Go to tab 7" },
+    ["8"] = { "<esc>8gt", "Go to tab 8" },
+    ["9"] = { "<esc>9gt", "Go to tab 9" },
+
+    ["v"] = { "V`", "Select just pasted text" },
+
+    a = {
+      name = "Async Run"
+    },
+
+    b = {
+      name = "Buffer",
+    },
+
+    f = {
+      name = "Fuzzy Search",
+    },
+
+    g = {
+      name = "Git",
+    },
+
+    h = {
+      name = "Highlight",
+      h = { "<cmd>nohlsearch<CR>", "No Highlight" },
     },
 
     l = {
@@ -36,37 +65,62 @@ if status_ok then
       I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
       r = { vim.lsp.buf.rename, "Rename" },
     },
-  }
 
-  local extra_sections = {
-    f = "File",
-    g = "Git",
-    l = "LSP",
-    s = "Search",
-    t = "Terminal",
-    S = "Session",
-  }
+    -- o = {}
+    -- p = {}
 
-  local function init_table(idx)
-    if not mappings[idx] then
-      mappings[idx] = { name = extra_sections[idx] }
-    end
-  end
+    s = {
+      name = "Session",
+      s = { "<cmd>SessionLoad<CR>", "Save Session" },
+      l = { "<cmd>SessionSave<CR>", "Load Session" },
+    },
+
+    t = {
+      name = "Tree/Tag/Terminal",
+    },
+
+    w = {
+      name = "Windows",
+      w = { "<cmd>w<CR>", "Write Buffer" },
+      q = { "<cmd>q<CR>", "Quit" },
+      t = { "<cmd>tabedit<CR>", "Open a new tab" },
+      z = { utils.zoom_restore_current_window , "Zoom/Restore current window" },
+      h = {
+        function()
+          vim.o.cursorcolumn = not vim.o.cursorcolumn
+        end,
+        "Zoom/Restore current window"
+      },
+    },
+
+    x = {
+      name = "Toggle",
+      c = {
+        function()
+          local beforeCnt = vim.call("winnr", "$")
+          vim.cmd("copen")
+          if beforeCnt == vim.call("winnr", "$") then
+            vim.cmd("cclose")
+          end
+        end,
+        "Toggle quickfix list"
+      },
+      l = {
+        function()
+          local beforeCnt = vim.call("winnr", "$")
+          vim.cmd("lopen")
+          if beforeCnt == vim.call("winnr", "$") then
+            vim.cmd("lclose")
+          end
+        end,
+        "Toggle location list"
+      },
+    },
+  }
 
   if utils.is_available "neo-tree.nvim" then
-    mappings.e = { "<cmd>Neotree toggle<CR>", "Toggle Explorer" }
-    mappings.o = { "<cmd>Neotree focus<CR>", "Focus Explorer" }
-  end
-
-  if utils.is_available "dashboard-nvim" then
-    mappings.d = { "<cmd>Dashboard<CR>", "Dashboard" }
-
-    init_table "f"
-    mappings.f.n = { "<cmd>DashboardNewFile<CR>", "New File" }
-
-    init_table "S"
-    mappings.S.s = { "<cmd>SessionLoad<CR>", "Save Session" }
-    mappings.S.l = { "<cmd>SessionSave<CR>", "Load Session" }
+    mappings.t.r = { "<cmd>Neotree toggle<CR>", "Toggle Tree Explorer" }
+    mappings.t.e = { "<cmd>Neotree focus<CR>", "Focus Tree Explorer" }
   end
 
   if utils.is_available "Comment.nvim" then
@@ -79,11 +133,10 @@ if status_ok then
   end
 
   if utils.is_available "vim-bbye" then
-    mappings.c = { "<cmd>Bdelete!<CR>", "Close Buffer" }
+    mappings.b.c = { "<cmd>Bdelete!<CR>", "Close Buffer" }
   end
 
   if utils.is_available "gitsigns.nvim" then
-    init_table "g"
     mappings.g.j = {
       function()
         require("gitsigns").next_hunk()
@@ -141,176 +194,79 @@ if status_ok then
   end
 
   if utils.is_available "nvim-toggleterm.lua" then
-    init_table "g"
-    mappings.g.g = {
-      function()
-        require("core.utils").toggle_term_cmd "lazygit"
-      end,
-      "Lazygit",
-    }
-
-    init_table "t"
-    mappings.t.n = {
-      function()
-        require("core.utils").toggle_term_cmd "node"
-      end,
-      "Node",
-    }
-    mappings.t.u = {
-      function()
-        require("core.utils").toggle_term_cmd "ncdu"
-      end,
-      "NCDU",
-    }
-    mappings.t.t = {
-      function()
-        require("core.utils").toggle_term_cmd "htop"
-      end,
-      "Htop",
-    }
-    mappings.t.p = {
-      function()
-        require("core.utils").toggle_term_cmd "python"
-      end,
-      "Python",
-    }
-    mappings.t.l = {
-      function()
-        require("core.utils").toggle_term_cmd "lazygit"
-      end,
-      "Lazygit",
-    }
-    mappings.t.f = { "<cmd>ToggleTerm direction=float<cr>", "Float" }
+    -- Add common commands here.
+    mappings.t.t = { "<cmd>ToggleTerm<CR>", "Toggle Terminal" }
     mappings.t.h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" }
     mappings.t.v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" }
   end
 
   if utils.is_available "symbols-outline.nvim" then
-    init_table "l"
-    mappings.l.S = { "<cmd>SymbolsOutline<CR>", "Symbols Outline" }
+    mappings.l.s = { "<cmd>SymbolsOutline<CR>", "Symbols Outline" }
   end
 
-  if utils.is_available "telescope.nvim" then
-    init_table "s"
-    mappings.s.b = {
+  if utils.is_available "asyncrun" then
+    vim.cmd("nnoremap <leader>aa :AsyncRun ")
+    mappings.a.a = { "Async run a command" }
+  end
+
+  if utils.is_available "LeaderF" then
+    mappings.f.f = { "Fuzzy search for files" }
+    mappings.f.b = { "Fuzzy search for buffers" }
+    mappings.f.c = {
       function()
-        require("telescope.builtin").git_branches()
+        vim.cmd('LeaderfFile ' .. utils.get_cwd())
       end,
-      "Checkout branch",
-    }
-    mappings.s.h = {
+      "Fuzzy search for files in current working directoy" }
+    mappings.f.m = { "<cmd>LeaderfMru<CR>", "Fuzzy search for MRU files" }
+    mappings.f.t = { "<cmd>LeaderfTag<CR>", "Fuzzy search for a tag in tag files" }
+    mappings.f.u = { "<cmd>LeaderfBufTag<CR>", "Fuzzy search for a tag within current buffer" }
+    mappings.f.a = { "<cmd>LeaderfBufTagAll<CR>", "Fuzzy search for a tag within buffers" }
+    mappings.f.i = { "<cmd>LeaderfFunction<CR>", "Fuzzy search for a function within current buffer" }
+    mappings.f.e = { "<cmd>LeaderfFunctionAll<CR>", "Fuzzy search for a function within buffers" }
+
+    mappings.f.w = {}
+    mappings.f.w.u = { "<cmd>LeaderfBufTagCword<CR>", "Fuzzy search for a tag within current buffer using word under cursor" }
+    mappings.f.w.a = { "<cmd>LeaderfBufTagAllCword<CR>", "Fuzzy search for a tag within buffers using word under cursor" }
+    mappings.f.w.n = { "<cmd>LeaderfFunctionCword<CR>", "Fuzzy search for a function within current buffer using word under cursor" }
+    mappings.f.w.e = { "<cmd>LeaderfFunctionAllCword<CR>", "Fuzzy search for a function within buffers using word under cursor" }
+
+    mappings.f.l = { "<cmd>LeaderfFile --recall<CR>", "Recall last fuzzy search" }
+
+    mappings.f.r = {
       function()
-        require("telescope.builtin").help_tags()
+        vim.cmd('Leaderf! gtags -r "' .. utils.get_cword() .. '" --auto-jump')
       end,
-      "Find Help",
-    }
-    mappings.s.m = {
+      "Gtags jump to references" }
+    mappings.f.d = {
       function()
-        require("telescope.builtin").man_pages()
+        vim.cmd('Leaderf! gtags -d "' .. utils.get_cword() .. '" --auto-jump')
       end,
-      "Man Pages",
-    }
-    mappings.s.n = {
+      "Gtags jump to definition" }
+    mappings.f.o = { "<cmd>Leaderf! gtags --recall<CR>", "Recall last Gtags search" }
+    mappings.f.n = { "<cmd>Leaderf! gtags --next<CR>", "Jump to next Gtags search result" }
+    mappings.f.p = { "<cmd>Leaderf! gtags --previous<CR>", "Jump to previous Gtags search result" }
+
+    mappings.f.g = {}
+    mappings.f.g.u = { "<cmd>Leaderf! gtags --update<CR>", "Update Gtags tag files" }
+
+    vim.cmd("nnoremap <leader>fgs :Leaderf! rg -e ")
+    mappings.f.g.s = { "Grep words in files" }
+
+    vim.cmd("nnoremap <leader>fgc :Leaderf! rg -t cpp -e ")
+    mappings.f.g.c = { "Grep words in CPP files" }
+
+    mappings.f.g.t = {
       function()
-        require("telescope").extensions.notify.notify()
+        vim.cmd('Leaderf! rg -e "' .. utils.get_cword() .. '"')
       end,
-      "Notifications",
-    }
-    mappings.s.r = {
-      function()
-        require("telescope.builtin").registers()
-      end,
-      "Registers",
-    }
-    mappings.s.k = {
-      function()
-        require("telescope.builtin").keymaps()
-      end,
-      "Keymaps",
-    }
-    mappings.s.c = {
-      function()
-        require("telescope.builtin").commands()
-      end,
-      "Commands",
+      "Grep the word under cursor in files"
     }
 
-    init_table "g"
-    mappings.g.t = {
+    mappings.f.g.d = {
       function()
-        require("telescope.builtin").git_status()
+        vim.cmd('Leaderf! rg -t cpp -e "' .. utils.get_cword() .. '"')
       end,
-      "Open changed file",
-    }
-    mappings.g.b = {
-      function()
-        require("telescope.builtin").git_branches()
-      end,
-      "Checkout branch",
-    }
-    mappings.g.c = {
-      function()
-        require("telescope.builtin").git_commits()
-      end,
-      "Checkout commit",
-    }
-
-    init_table "f"
-    mappings.f.b = {
-      function()
-        require("telescope.builtin").buffers()
-      end,
-      "Find Buffers",
-    }
-    mappings.f.f = {
-      function()
-        require("telescope.builtin").find_files()
-      end,
-      "Find Files",
-    }
-    mappings.f.h = {
-      function()
-        require("telescope.builtin").help_tags()
-      end,
-      "Find Help",
-    }
-    mappings.f.m = {
-      function()
-        require("telescope.builtin").marks()
-      end,
-      "Find Marks",
-    }
-    mappings.f.o = {
-      function()
-        require("telescope.builtin").oldfiles()
-      end,
-      "Find Old Files",
-    }
-    mappings.f.w = {
-      function()
-        require("telescope.builtin").live_grep()
-      end,
-      "Find Words",
-    }
-
-    init_table "l"
-    mappings.l.s = {
-      function()
-        require("telescope.builtin").lsp_document_symbols()
-      end,
-      "Document Symbols",
-    }
-    mappings.l.R = {
-      function()
-        require("telescope.builtin").lsp_references()
-      end,
-      "References",
-    }
-    mappings.l.D = {
-      function()
-        require("telescope.builtin").diagnostics()
-      end,
-      "All Diagnostics",
+      "Grep the word under cursor in CPP files"
     }
   end
 

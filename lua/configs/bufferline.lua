@@ -19,7 +19,8 @@ function M.config()
         max_prefix_length = 13,
         tab_size = 20,
         view = "multiwindow",
-        separator_style = "thin",
+        separator_style = "thick",
+        mode = "tabs"
       },
     }))
   end
