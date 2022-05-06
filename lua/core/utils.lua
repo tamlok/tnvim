@@ -239,6 +239,8 @@ function M.install_scoop()
     return
   end
 
+  vim.notify("Installing Scoop.", "info", M.base_notification)
+
   local Job = require "plenary.job"
   Job
     :new({
@@ -249,7 +251,7 @@ function M.install_scoop()
         if return_val == 0 then
           vim.notify("Scoop installed.", "info", M.base_notification)
         else
-          vim.notify("Scoop failed to install. Run 'iwr -useb get.scoop.sh | iex' manually.",
+          vim.notify("Failed to install Scoop. Run 'iwr -useb get.scoop.sh | iex' manually.",
                      "error",
                      M.base_notification)
         end
@@ -263,17 +265,39 @@ function M.install_utils()
     return
   end
 
+  vim.notify("Installing utils.", "info", M.base_notification)
+
   local Job = require "plenary.job"
   Job
     :new({
-      command = "scoop.exe",
-      args = { "install", "global", "ripgrep", "ctags" },
+      command = "scoop.cmd",
+      args = { "install", "python", "global", "ripgrep", "ctags" },
       cwd = vim.fn.stdpath "config",
       on_exit = function(_, return_val)
         if return_val == 0 then
           vim.notify("Utils installed via Scoop.", "info", M.base_notification)
         else
-          vim.notify("Utils failed to install.", "error", M.base_notification)
+          vim.notify("Failed to install utils.", "error", M.base_notification)
+        end
+      end,
+    })
+    :sync()
+end
+
+function M.install_pynvim()
+  vim.notify("Installing pynvim.", "info", M.base_notification)
+
+  local Job = require "plenary.job"
+  Job
+    :new({
+      command = "python3",
+      args = { "-m", "pip", "install", "--user", "--upgrade", "pynvim" },
+      cwd = vim.fn.stdpath "config",
+      on_exit = function(_, return_val)
+        if return_val == 0 then
+          vim.notify("Pynvim installed.", "info", M.base_notification)
+        else
+          vim.notify("Failed to install pynvim.", "error", M.base_notification)
         end
       end,
     })
@@ -306,6 +330,28 @@ function M.zoom_restore_current_window()
     vim.cmd("resize")
     vim.cmd("vertical resize")
     vim.t.zoomed = true
+  end
+end
+
+function M.file_exists(name)
+  local f=io.open(name,"r")
+  if f~=nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
+end
+
+function M.set_tab_stop_width(tab_width)
+  if tab_width == 0 then
+    vim.o.expandtab = false
+  else if tab_width > 0 then
+    vim.o.tabstop = tab_width
+    vim.o.softtabstop = tab_width
+    vim.o.shiftwidth = tab_width
+    vim.o.expandtab = true
+  end
   end
 end
 

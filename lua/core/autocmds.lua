@@ -28,6 +28,9 @@ cmd("WinEnter", {
   command = "set cursorline",
 })
 
+vim.g.t_old_cursorline = vim.o.cursorline
+vim.g.t_old_laststatus = vim.o.laststatus
+
 if utils.is_available "dashboard-nvim" then
   augroup("dashboard_settings", {})
   if utils.is_available "bufferline.nvim" then
@@ -48,19 +51,19 @@ if utils.is_available "dashboard-nvim" then
     desc = "Disable statusline for dashboard",
     group = "dashboard_settings",
     pattern = "dashboard",
-    command = "let g:old_laststatus = &laststatus | set laststatus=0",
+    command = "let g:t_old_laststatus = &laststatus | set laststatus=0",
   })
   cmd("BufWinLeave", {
     desc = "Reenable statusline/cursorline when leaving dashboard",
     group = "dashboard_settings",
     pattern = "<buffer>",
-    command = "let &laststatus = g:old_laststatus | let &cursorline = g:old_cursorline",
+    command = "let &laststatus = g:t_old_laststatus | let &cursorline = g:t_old_cursorline",
   })
   cmd("BufEnter", {
     desc = "No cursorline on dashboard",
     group = "dashboard_settings",
     pattern = "*",
-    command = "if &ft is 'dashboard' | let g:old_cursorline = &cursorline | set nocursorline | endif",
+    command = "if &ft is 'dashboard' | let g:t_old_cursorline = &cursorline | set nocursorline | endif",
   })
 end
 
@@ -87,5 +90,13 @@ cmd("InsertEnter", {
 
 create_command("TVScoop", require("core.utils").install_scoop, { desc = "Install Scoop on Windows" })
 create_command("TVInstallUtils", require("core.utils").install_utils, { desc = "Install utils like ripgrep/ctags/global" })
+create_command("TVTab",
+  function(opts)
+    require("core.utils").set_tab_stop_width(tonumber(opts.args))
+  end,
+  {
+    nargs = 1,
+    desc = "Set Tab stop width",
+  })
 
 return M

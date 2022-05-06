@@ -39,3 +39,7 @@ local polish = utils.user_plugin_opts "polish"
 if type(polish) == "function" then
   polish()
 end
+
+if utils.file_exists(".nvim.lua.user") then
+  vim.cmd('source .nvim.lua.user')
+end
