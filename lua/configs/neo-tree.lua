@@ -36,6 +36,8 @@ function M.config()
         width = 35,
         mappings = {
           ["o"] = "open",
+          -- Avoid conflict with which-key
+          ["<space>"] = "none",
         },
       },
       filesystem = {
@@ -50,7 +52,7 @@ function M.config()
             "__pycache__",
           },
         },
-        follow_current_file = true,
+        follow_current_file = false,
         hijack_netrw_behavior = "open_current",
         use_libuv_file_watcher = true,
       },

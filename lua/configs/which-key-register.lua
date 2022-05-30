@@ -14,7 +14,7 @@ if status_ok then
   }
 
   local mappings = {
-    ["space"] = { '<cmd>"+yiw<CR>', "Yank the word under cursor to clipboard" },
+    ["."] = { '<cmd>"+yiw<CR>', "Yank the word under cursor to clipboard" },
 
     -- Tabs
     ["0"] = {
@@ -52,25 +52,28 @@ if status_ok then
     },
 
     h = {
-      name = "Highlight",
+      name = "Highlight/FSwitch",
       h = { "<cmd>nohlsearch<CR>", "No Highlight" },
     },
 
     l = {
       name = "LSP",
       a = { vim.lsp.buf.code_action, "Code Action" },
-      d = { vim.diagnostic.open_float, "Hover Diagnostic" },
+      o = { vim.diagnostic.open_float, "Hover Diagnostic" },
       f = { vim.lsp.buf.formatting_sync, "Format" },
-      i = { "<cmd>LspInfo<cr>", "Info" },
-      I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
-      r = { vim.lsp.buf.rename, "Rename" },
+      D = { vim.lsp.buf.declaration, "Go to declaration" },
+      d = { vim.lsp.buf.definition, "Go to definition" },
+      i = { vim.lsp.buf.implementation, "Go to implementation" },
+      r = { vim.lsp.buf.references, "List all references" },
+      R = { vim.lsp.buf.rename, "Rename" },
+      h = { vim.lsp.buf.hover, "Display hover information" },
     },
 
     -- o = {}
     -- p = {}
 
     s = {
-      name = "Session",
+      name = "Session/External Search",
       s = { "<cmd>SessionLoad<CR>", "Save Session" },
       l = { "<cmd>SessionSave<CR>", "Load Session" },
     },
@@ -119,8 +122,23 @@ if status_ok then
   }
 
   if utils.is_available "neo-tree.nvim" then
-    mappings.t.r = { "<cmd>Neotree toggle<CR>", "Toggle Tree Explorer" }
-    mappings.t.e = { "<cmd>Neotree focus<CR>", "Focus Tree Explorer" }
+    mappings.t.r = { "<cmd>Neotree toggle reveal<CR>", "Toggle NeoTree Explorer" }
+    mappings.t.f = { "<cmd>Neotree float reveal<CR>", "Toggle NeoTree Float Explorer" }
+  end
+
+  if utils.is_available "open-browser.vim" then
+    mappings.s.c = { "<cmd>call openbrowser#smart_search(expand('<cword>'), 'cplusplus')<CR>",
+                     "Search word under cursor in CPlusPlus" }
+    mappings.s.q = { "<cmd>call openbrowser#smart_search(expand('<cword>'), 'qt')<CR>",
+                     "Search word under cursor in Qt docs" }
+  end
+
+  if utils.is_available "vim-fswitch" then
+    mappings.h.i = { "<cmd>FSHere<CR>", "Switch between heder and implementation file" }
+  end
+
+  if utils.is_available "symbols-outline.nvim" then
+    mappings.t.s = { "<cmd>SymbolsOutline<CR>", "Toggle Symbols Outline" }
   end
 
   if utils.is_available "Comment.nvim" then
@@ -209,7 +227,48 @@ if status_ok then
     mappings.a.a = { "Async run a command" }
   end
 
-  if utils.is_available "LeaderF" then
+  if utils.is_available "telescope.nvim" then
+    mappings.f.f = {
+      function()
+        require("configs.telescope").find_files_in_dirs({previewer = false})
+      end,
+      "Fuzzy search for files"
+    }
+    mappings.f.b = {
+      function()
+        require("telescope.builtin").buffers()
+      end,
+      "Fuzzy search for buffers"
+    }
+    mappings.f.m = {
+      function()
+        require("telescope.builtin").oldfiles({previewer = false})
+      end,
+      "Fuzzy search for recently opened files"
+    }
+    mappings.f.u = {
+      "<cmd>Telescope ctags_outline outline<CR>",
+      "Fuzzy search for a tag within current buffer"
+    }
+    mappings.f.a = {
+      function()
+        require('telescope').extensions.ctags_outline.outline({buf='all'})
+      end,
+      "Fuzzy search for a tag within opened buffers"
+    }
+    mappings.f.e = {
+      function()
+        require("telescope.builtin").lsp_dynamic_workspace_symbols()
+      end,
+      "Fuzzy search for a tag in all workspaces"
+    }
+    mappings.f.g = {
+      function()
+        require("telescope.builtin").live_grep({grep_open_files = true})
+      end,
+      "Fuzzy search within opened buffers" ,
+    }
+  elseif utils.is_available "LeaderF" then
     mappings.f.f = { "Fuzzy search for files" }
     mappings.f.b = { "Fuzzy search for buffers" }
     mappings.f.c = {
@@ -236,18 +295,20 @@ if status_ok then
       function()
         vim.cmd('Leaderf! gtags -r "' .. utils.get_cword() .. '" --auto-jump')
       end,
-      "Gtags jump to references" }
+      "Gtags jump to references of the word under cursor" }
     mappings.f.d = {
       function()
         vim.cmd('Leaderf! gtags -d "' .. utils.get_cword() .. '" --auto-jump')
       end,
-      "Gtags jump to definition" }
+      "Gtags jump to definition of the word under cursor" }
+
+    vim.cmd("nnoremap <leader>fh :Leaderf! gtags -d --auto-jump ")
+    mappings.f.h = { "Gtags jump to definition" }
     mappings.f.o = { "<cmd>Leaderf! gtags --recall<CR>", "Recall last Gtags search" }
     mappings.f.n = { "<cmd>Leaderf! gtags --next<CR>", "Jump to next Gtags search result" }
     mappings.f.p = { "<cmd>Leaderf! gtags --previous<CR>", "Jump to previous Gtags search result" }
 
     mappings.f.g = {}
-    mappings.f.g.u = { "<cmd>Leaderf! gtags --update<CR>", "Update Gtags tag files" }
 
     vim.cmd("nnoremap <leader>fgs :Leaderf! rg -e ")
     mappings.f.g.s = { "Grep words in files" }
@@ -268,6 +329,15 @@ if status_ok then
       end,
       "Grep the word under cursor in CPP files"
     }
+  end
+
+  mappings.f.s = {}
+  if utils.is_available "ack.vim" then
+    vim.cmd("nnoremap <leader>fss :TVAck ")
+    mappings.f.s.s = { "Grep words in files" }
+
+    vim.cmd("nnoremap <leader>fsc :TVAck --type=cpp ")
+    mappings.f.s.c = { "Grep words in CPP files" }
   end
 
   which_key.register(require("core.utils").user_plugin_opts("which-key.register_n_leader", mappings), opts)

@@ -41,17 +41,18 @@ if utils.is_available "smart-splits.nvim" then
   end)
 end
 
--- Map Ctrl+J/K to navigate down and up in popup menu
--- Ctrl+N and Ctrl+P may cause performance issue
-vim.cmd('inoremap <expr> <C-J> pumvisible() ? "<Down>" : "<C-J">')
-vim.cmd('inoremap <expr> <C-K> pumvisible() ? "<Up>" : "<C-K">')
-
 -- Function Keys
 map("n", "<F2>", function()
   vim.o.paste = not vim.o.paste
 end)
 map("n", "<F3>", function()
   utils.set_cwd_to_current_file()
+end)
+map("n", "<F6>", function()
+  require("core.tags").update_ctags()
+end)
+map("n", "<F7>", function()
+  require("core.tags").update_gtags()
 end)
 
 -- Buffers
@@ -85,17 +86,8 @@ map("n", "[R", "<cmd>ptfirst<CR>")
 map("n", "]R", "<cmd>ptlast<CR>")
 
 -- LSP
-map("n", "gD", vim.lsp.buf.declaration)
-map("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current function" })
-map("n", "gI", vim.lsp.buf.implementation)
-map("n", "gr", vim.lsp.buf.references)
-map("n", "go", vim.diagnostic.open_float)
-map("n", "gl", vim.diagnostic.open_float)
 map("n", "[d", vim.diagnostic.goto_prev)
-map("n", "gk", vim.diagnostic.goto_prev)
 map("n", "]d", vim.diagnostic.goto_next)
-map("n", "gj", vim.diagnostic.goto_next)
-map("n", "K", vim.lsp.buf.hover)
 
 -- Registers
 map("n", "<leader>p", '"+')

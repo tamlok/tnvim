@@ -67,6 +67,20 @@ if utils.is_available "dashboard-nvim" then
   })
 end
 
+if utils.is_available "vim-fswitch" then
+  augroup("fswitch_settings", {})
+  cmd("BufEnter", {
+    group = "fswitch_settings",
+    pattern = "*.h",
+    command = "let b:fswitchdst = 'c,cpp,m,cc' | let b:fswitchlocs = 'reg:|include.*|src/**|'",
+  })
+  cmd("BufEnter", {
+    group = "fswitch_settings",
+    pattern = "*.cc",
+    command = "let b:fswitchdst = 'h,hpp'",
+  })
+end
+
 vim.g.t_last_active_tab = 1
 
 augroup("buffer_cmd", {})
@@ -88,8 +102,22 @@ cmd("InsertEnter", {
   command = "set noimdisable | set iminsert=0",
 })
 
+vim.cmd("hi ExtraWhitespace ctermbg=202 guibg=#ff5f00")
+cmd("InsertEnter", {
+  desc = "Highlight extra whitespace",
+  group = "buffer_cmd",
+  command = "match ExtraWhitespace /\\s\\+\\%#\\@<!$/"
+})
+cmd("InsertLeave", {
+  desc = "Highlight extra whitespace",
+  group = "buffer_cmd",
+  command = "match ExtraWhitespace /\\s\\+$/",
+})
+
 create_command("TVScoop", require("core.utils").install_scoop, { desc = "Install Scoop on Windows" })
-create_command("TVInstallUtils", require("core.utils").install_utils, { desc = "Install utils like ripgrep/ctags/global" })
+create_command("TVUtils", require("core.utils").install_utils, { desc = "Install utils like ripgrep/ctags/global" })
+create_command("TVPynvim", require("core.utils").install_pynvim, { desc = "Install Pynvim" })
+create_command("TVLlvm", require("core.utils").install_llvm, { desc = "Install LLVM" })
 create_command("TVTab",
   function(opts)
     require("core.utils").set_tab_stop_width(tonumber(opts.args))
@@ -97,6 +125,14 @@ create_command("TVTab",
   {
     nargs = 1,
     desc = "Set Tab stop width",
+  })
+create_command("TVAck",
+  function(opts)
+    require("configs.ack").ack_wrapper(opts.args)
+  end,
+  {
+    nargs = "*",
+    desc = "Ack wrapper respecting globs defined as vim.g.t_target_globs",
   })
 
 return M

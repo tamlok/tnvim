@@ -40,6 +40,6 @@ if type(polish) == "function" then
   polish()
 end
 
-if utils.file_exists(".nvim.lua.user") then
-  vim.cmd('source .nvim.lua.user')
+if utils.file_exists(".nvim.user") then
+  vim.cmd('source .nvim.user')
 end

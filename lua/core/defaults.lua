@@ -1,6 +1,6 @@
 
 local config = {
-  colorscheme = "default_theme",
+  colorscheme = "default",
 
   plugins = {
     packer = {
@@ -24,11 +24,11 @@ local config = {
     colorizer = true,
     toggle_term = true,
     comment = true,
-    symbols_outline = true,
     dashboard = true,
     which_key = true,
     ts_rainbow = true,
     ts_autotag = true,
+    telescope = true
   },
 
   cmp = {

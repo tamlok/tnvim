@@ -5,19 +5,31 @@ if packer_status_ok then
   local utils = require "core.utils"
   local config = utils.user_settings()
 
-  local astro_plugins = {
+  local plugins = {
     -- Plugin manager
     {
       "wbthomason/packer.nvim",
     },
 
-    { "sainnhe/edge",
+    -- Colorschemes
+    {
+      "sainnhe/edge",
       config = function()
         vim.o.background = 'light'
         vim.g.edge_style = 'default'
         vim.g.edge_better_performance = true
         vim.cmd "colorscheme edge"
       end,
+      disable = true,
+    },
+
+    {
+      "EdenEast/nightfox.nvim",
+      config = function()
+        vim.o.background = 'light'
+        vim.cmd "colorscheme dawnfox"
+      end,
+      disable = false,
     },
 
     -- Optimiser
@@ -163,7 +175,6 @@ if packer_status_ok then
     -- Completion engine
     {
       "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
       config = function()
         require("configs.cmp").config()
       end,
@@ -229,7 +240,6 @@ if packer_status_ok then
       setup = function()
         require("configs.symbols-outline").setup()
       end,
-      disable = not config.enabled.symbols_outline,
     },
 
     -- Formatting and linting
@@ -319,6 +329,37 @@ if packer_status_ok then
       config = function()
         require("configs.leaderf").config()
       end,
+      disable = config.enabled.telescope,
+    },
+
+		-- Fuzzy finder
+    {
+      "nvim-telescope/telescope.nvim",
+			cmd = "Telescope",
+			module = "telescope",
+			config = function()
+				require("configs.telescope").config()
+			end,
+		},
+
+		-- Fuzzy finder syntax support
+		{
+      "natecraddock/telescope-zf-native.nvim",
+			after = "telescope.nvim",
+			config = function()
+				require("telescope").load_extension("zf-native")
+			end,
+		},
+
+    -- Outline using ctags
+    {
+      "fcying/telescope-ctags-outline.nvim",
+			after = "telescope.nvim",
+    },
+
+    -- Smooth scrolling
+    {
+      "psliwka/vim-smoothie",
     },
 
     -- Async run
@@ -329,6 +370,48 @@ if packer_status_ok then
         require("configs.asyncrun").config()
       end,
     },
+
+    -- In-place CSS color
+    {
+      "ap/vim-css-color",
+    },
+
+    -- Ack
+    {
+      "mileszs/ack.vim",
+      cmd = "Ack",
+      config = function()
+        require("configs.ack").config()
+      end,
+    },
+
+    -- Open Browser
+    {
+      "tyru/open-browser.vim",
+      config = function()
+        require("configs.open-browser").config()
+      end,
+    },
+
+    -- Switch Header/Implementation file
+    {
+      "derekwyatt/vim-fswitch",
+      cmd = "FSHere",
+    },
+
+    -- CTags and GTags
+    {
+      "tamlok/vim-gutentags",
+      config = function()
+        require("configs.vim-gutentags").config()
+      end,
+      disable = true,
+    },
+
+    -- Gtags
+    {
+      "vim-scripts/gtags.vim",
+    }
   }
 
   packer.startup {
@@ -336,7 +419,7 @@ if packer_status_ok then
       -- Load plugins!
       for _, plugin in
         pairs(
-          require("core.utils").user_plugin_opts("plugins.init", require("core.utils").label_plugins(astro_plugins))
+          require("core.utils").user_plugin_opts("plugins.init", require("core.utils").label_plugins(plugins))
         )
       do
         use(plugin)

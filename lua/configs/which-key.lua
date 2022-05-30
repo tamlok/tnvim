@@ -6,17 +6,17 @@ function M.config()
     which_key.setup(require("core.utils").user_plugin_opts("plugins.which-key", {
       plugins = {
         marks = true,
-        registers = true,
+        registers = false,
         spelling = {
-          enabled = true,
+          enabled = false,
           suggestions = 20,
         },
         presets = {
           operators = false,
-          motions = true,
-          text_objects = true,
-          windows = true,
-          nav = true,
+          motions = false,
+          text_objects = false,
+          windows = false,
+          nav = false,
           z = true,
           g = true,
         },

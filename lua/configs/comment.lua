@@ -19,6 +19,11 @@ function M.config()
           location = location,
         }
       end,
+      mappings = {
+        basic = false,
+        extra = false,
+        extended = false,
+      }
     }))
   end
 end

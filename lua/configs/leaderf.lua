@@ -1,7 +1,9 @@
 local M = {}
 
+local utils = require('core.utils')
+
 function M.config()
-  if require('core.utils').is_available('LeaderF') then
+  if utils.is_available('LeaderF') then
     vim.g.Lf_PreviewResult = {
       BufTag = 0,
       Function = 0
@@ -28,7 +30,14 @@ function M.config()
     }
 
     vim.g.Lf_GtagsAutoGenerate = 0
-    vim.g.Lf_Gtagslabel = 'native-pygments'
+    vim.g.Lf_GtagsGutentags = 1
+    vim.g.Lf_CacheDirectory = vim.fn.expand('~')
+    if (utils.get_os() == "win") then
+      local scoop_conf = vim.fn.expand('~/scoop/apps/global/current/share/gtags/gtags.conf')
+      if (utils.file_exists(scoop_conf)) then
+        vim.g.Lf_Gtagsconf = scoop_conf
+      end
+    end
   end
 end
 

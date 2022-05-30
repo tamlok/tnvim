@@ -267,11 +267,18 @@ function M.install_utils()
 
   vim.notify("Installing utils.", "info", M.base_notification)
 
+  vim.fn.system {
+    "scoop.cmd",
+    "bucket",
+    "add",
+    "extras"
+  }
+
   local Job = require "plenary.job"
   Job
     :new({
       command = "scoop.cmd",
-      args = { "install", "python", "global", "ripgrep", "ctags" },
+      args = { "install", "python", "global", "ripgrep", "universal-ctags" },
       cwd = vim.fn.stdpath "config",
       on_exit = function(_, return_val)
         if return_val == 0 then
@@ -298,6 +305,26 @@ function M.install_pynvim()
           vim.notify("Pynvim installed.", "info", M.base_notification)
         else
           vim.notify("Failed to install pynvim.", "error", M.base_notification)
+        end
+      end,
+    })
+    :sync()
+end
+
+function M.install_llvm()
+  vim.notify("Installing LLVM.", "info", M.base_notification)
+
+  local Job = require "plenary.job"
+  Job
+    :new({
+      command = "scoop.cmd",
+      args = { "install", "llvm" },
+      cwd = vim.fn.stdpath "config",
+      on_exit = function(_, return_val)
+        if return_val == 0 then
+          vim.notify("LLVM installed.", "info", M.base_notification)
+        else
+          vim.notify("Failed to install LLVM.", "error", M.base_notification)
         end
       end,
     })
@@ -334,7 +361,7 @@ function M.zoom_restore_current_window()
 end
 
 function M.file_exists(name)
-  local f=io.open(name,"r")
+  local f = io.open(name, "r")
   if f~=nil then
     io.close(f)
     return true
