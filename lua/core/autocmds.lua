@@ -77,7 +77,7 @@ if utils.is_available "vim-fswitch" then
   cmd("BufEnter", {
     group = "fswitch_settings",
     pattern = "*.cc",
-    command = "let b:fswitchdst = 'h,hpp'",
+    command = "let b:fswitchdst = 'h,hpp' | let b:fswitchlocs = 'reg:|src.*|include/**|'",
   })
 end
 
