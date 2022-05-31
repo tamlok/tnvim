@@ -56,11 +56,12 @@ function M.config()
             ["<C-t>"] = actions.select_tab,
 
             ["<C-u>"] = false,
-            ["<C-b>"] = actions.preview_scrolling_up,
-            ["<C-f>"] = actions.preview_scrolling_down,
+            ["<PageUp>"] = actions.preview_scrolling_up,
+            ["<PageDown>"] = actions.preview_scrolling_down,
 
-            ["<PageUp>"] = actions.results_scrolling_up,
-            ["<PageDown>"] = actions.results_scrolling_down,
+            ["<C-b>"] = actions.results_scrolling_up,
+            ["<C-f>"] = actions.results_scrolling_down,
+            ["<C-d>"] = actions.results_scrolling_down,
 
             ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
             ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
@@ -93,11 +94,12 @@ function M.config()
             ["G"] = actions.move_to_bottom,
 
             ["<C-u>"] = false,
-            ["<C-b>"] = actions.preview_scrolling_up,
-            ["<C-f>"] = actions.preview_scrolling_down,
+            ["<PageUp>"] = actions.preview_scrolling_up,
+            ["<PageDown>"] = actions.preview_scrolling_down,
 
-            ["<PageUp>"] = actions.results_scrolling_up,
-            ["<PageDown>"] = actions.results_scrolling_down,
+            ["<C-b>"] = actions.results_scrolling_up,
+            ["<C-f>"] = actions.results_scrolling_down,
+            ["<C-d>"] = actions.results_scrolling_down,
           },
         },
       },

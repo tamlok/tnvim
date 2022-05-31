@@ -15,14 +15,14 @@ function M.update_ctags()
     if file_list_file ~= nil then
         ctags_cmd = ctags_cmd .. " -L " .. file_list_file
     end
-    vim.cmd("AsyncRun -silent " .. ctags_cmd)
+    vim.cmd("AsyncRun " .. ctags_cmd)
 end
 
 function M.update_gtags()
     vim.env.GTAGSFORCECPP = 1
     if require("core.utils").file_exists("GTAGS") then
         vim.notify("Updating gtags...")
-        vim.cmd("AsyncRun -silent global --update")
+        vim.cmd("AsyncRun global --update")
         return
     end
 
@@ -38,7 +38,7 @@ function M.update_gtags()
     if file_list_file ~= nil then
         gtags_cmd = gtags_cmd .. " -f " .. file_list_file
     end
-    vim.cmd("AsyncRun -silent " .. gtags_cmd)
+    vim.cmd("AsyncRun " .. gtags_cmd)
 end
 
 return M

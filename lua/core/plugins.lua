@@ -380,6 +380,9 @@ if packer_status_ok then
     {
       "mileszs/ack.vim",
       cmd = "Ack",
+      setup = function()
+        require("configs.ack").setup()
+      end,
       config = function()
         require("configs.ack").config()
       end,

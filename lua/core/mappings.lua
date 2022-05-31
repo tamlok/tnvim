@@ -48,12 +48,6 @@ end)
 map("n", "<F3>", function()
   utils.set_cwd_to_current_file()
 end)
-map("n", "<F6>", function()
-  require("core.tags").update_ctags()
-end)
-map("n", "<F7>", function()
-  require("core.tags").update_gtags()
-end)
 
 -- Buffers
 map("n", "[b", "<cmd>bprevious<CR>")

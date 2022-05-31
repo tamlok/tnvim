@@ -134,5 +134,7 @@ create_command("TVAck",
     nargs = "*",
     desc = "Ack wrapper respecting globs defined as vim.g.t_target_globs",
   })
+create_command("TVCtags", require("core.tags").update_ctags, { desc = "Update ctags" })
+create_command("TVGtags", require("core.tags").update_gtags, { desc = "Update gtags" })
 
 return M
