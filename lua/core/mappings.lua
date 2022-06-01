@@ -43,9 +43,6 @@ end
 
 -- Function Keys
 map("n", "<F2>", function()
-  vim.o.paste = not vim.o.paste
-end)
-map("n", "<F3>", function()
   utils.set_cwd_to_current_file()
 end)
 
