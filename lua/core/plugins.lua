@@ -371,6 +371,15 @@ if packer_status_ok then
       end,
     },
 
+    -- Async tasks
+    {
+      "skywind3000/asynctasks.vim",
+      cmd = {
+        "AsyncTask",
+        "AsyncTaskEdit",
+      },
+    },
+
     -- In-place CSS color
     {
       "ap/vim-css-color",
@@ -414,7 +423,16 @@ if packer_status_ok then
     -- Gtags
     {
       "vim-scripts/gtags.vim",
-    }
+    },
+
+    -- Vimspector
+    {
+      "puremourning/vimspector",
+      setup = function()
+        vim.g.vimspector_enable_mappings = 'VISUAL_STUDIO'
+      end,
+      disable = true,
+    },
   }
 
   packer.startup {
