@@ -102,8 +102,7 @@ function M.config()
             cond = conditions.hide_in_width,
           },
           {
-            "location",
-            padding = { left = 1, right = 1 },
+            "%l-%L %c%V",
           },
           {
             "progress",
@@ -124,7 +123,7 @@ function M.config()
         lualine_a = { '%-3n' },
         lualine_b = {},
         lualine_c = { 'filename', 'encoding', 'fileformat' },
-        lualine_x = { 'location' },
+        lualine_x = { '%l-%L %c%V' },
         lualine_y = {},
         lualine_z = {},
       },
