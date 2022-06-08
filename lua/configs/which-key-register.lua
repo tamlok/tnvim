@@ -36,7 +36,7 @@ if status_ok then
     ["v"] = { "V`", "Select just pasted text" },
 
     a = {
-      name = "Async Run"
+      name = "Async Run/Async Task"
     },
 
     b = {
@@ -222,9 +222,14 @@ if status_ok then
     mappings.l.s = { "<cmd>SymbolsOutline<CR>", "Symbols Outline" }
   end
 
-  if utils.is_available "asyncrun" then
+  if utils.is_available "asyncrun.vim" then
     vim.cmd("nnoremap <leader>aa :AsyncRun ")
     mappings.a.a = { "Async run a command" }
+  end
+
+  if utils.is_available "asynctasks.vim" then
+    mappings.a.b = { "<cmd>AsyncTask build<cr>", "Async run task 'build'" }
+    mappings.a.r = { "<cmd>AsyncTask run<cr>", "Async run task 'run'" }
   end
 
   if utils.is_available "telescope.nvim" then
