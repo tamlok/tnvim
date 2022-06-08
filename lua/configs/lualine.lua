@@ -2,23 +2,9 @@ local M = {}
 
 local status = require "core.status"
 
-local function get_hl_by_name(name)
-  return string.format("#%06x", vim.api.nvim_get_hl_by_name(name.group, true)[name.prop])
-end
-
-local function get_hl_prop(group, prop, default)
-  local status_ok, color = pcall(get_hl_by_name, { group = group, prop = prop })
-  if status_ok then
-    default = color
-  end
-  return default
-end
-
 function M.config()
   local status_ok, lualine = pcall(require, "lualine")
   if status_ok then
-    local colors = require "default_theme.colors"
-
     local conditions = {
       buffer_not_empty = function()
         return vim.fn.empty(vim.fn.expand "%:t") ~= 1
@@ -55,7 +41,6 @@ function M.config()
           {
             "branch",
             icon = "",
-            color = { fg = get_hl_prop("Conditional", "foreground", colors.purple_1), gui = "bold" },
             padding = { left = 2, right = 1 },
           },
           {
@@ -84,20 +69,17 @@ function M.config()
         lualine_x = {
           {
             status.lsp_progress,
-            color = { gui = "none" },
             padding = { left = 0, right = 1 },
             cond = conditions.hide_in_width,
           },
           {
             status.lsp_name,
             icon = " ",
-            color = { gui = "none" },
             padding = { left = 0, right = 1 },
             cond = conditions.hide_in_width,
           },
           {
             status.treesitter_status,
-            color = { fg = get_hl_prop("GitSignsAdd", "foreground", colors.green) },
             padding = { left = 1, right = 0 },
             cond = conditions.hide_in_width,
           },
@@ -106,13 +88,10 @@ function M.config()
           },
           {
             "progress",
-            color = { gui = "none" },
-            padding = { left = 0, right = 0 },
           },
           {
             status.progress_bar,
             padding = { left = 1, right = 2 },
-            color = { fg = get_hl_prop("TypeDef", "foreground", colors.yellow) },
             cond = nil,
           },
         },
@@ -123,7 +102,7 @@ function M.config()
         lualine_a = { '%-3n' },
         lualine_b = {},
         lualine_c = { 'filename', 'encoding', 'fileformat' },
-        lualine_x = { '%l-%L %c%V' },
+        lualine_x = { "%l-%L %c%V", "progress" },
         lualine_y = {},
         lualine_z = {},
       },
