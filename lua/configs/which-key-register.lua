@@ -121,9 +121,9 @@ if status_ok then
     },
   }
 
-  if utils.is_available "neo-tree.nvim" then
-    mappings.t.r = { "<cmd>Neotree toggle reveal<CR>", "Toggle NeoTree Explorer" }
-    mappings.t.f = { "<cmd>Neotree float reveal<CR>", "Toggle NeoTree Float Explorer" }
+  if utils.is_available "nerdtree" then
+    mappings.t.r = { "<cmd>NERDTreeToggle<CR>", "Toggle File Explorer" }
+    mappings.t.f = { "<cmd>NERDTreeFind<CR>", "Toggle File Explorer" }
   end
 
   if utils.is_available "open-browser.vim" then

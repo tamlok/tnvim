@@ -113,14 +113,11 @@ if packer_status_ok then
 
     -- File explorer
     {
-      "nvim-neo-tree/neo-tree.nvim",
-      module = "neo-tree",
-      cmd = "Neotree",
-      requires = "MunifTanjim/nui.nvim",
+      "preservim/nerdtree",
+      cmd = {"NERDTree", "NERDTreeToggle", "NERDTreeFind"},
       config = function()
-        require("configs.neo-tree").config()
+        require("configs.nerdtree").config()
       end,
-      disable = not config.enabled.neo_tree,
     },
 
     -- Statusline
