@@ -20,7 +20,7 @@ if packer_status_ok then
         vim.g.edge_better_performance = true
         vim.cmd "colorscheme edge"
       end,
-      disable = true,
+      disable = false,
     },
 
     {
@@ -29,7 +29,7 @@ if packer_status_ok then
         vim.o.background = 'light'
         vim.cmd "colorscheme dawnfox"
       end,
-      disable = false,
+      disable = true,
     },
 
     -- Optimiser
