@@ -17,14 +17,11 @@ local config = {
   },
 
   enabled = {
-    bufferline = true,
-    neo_tree = true,
     lualine = true,
     gitsigns = true,
     colorizer = true,
     toggle_term = true,
     comment = true,
-    dashboard = true,
     which_key = true,
     ts_rainbow = true,
     ts_autotag = true,

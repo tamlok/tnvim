@@ -28,7 +28,7 @@ function M.config()
 
     lualine.setup(require("core.utils").user_plugin_opts("plugins.lualine", {
       options = {
-        disabled_filetypes = { "NvimTree", "neo-tree", "dashboard", "Outline" },
+        disabled_filetypes = { "NvimTree", "nerdtree", "neo-tree", "dashboard", "Outline" },
         component_separators = "",
         section_separators = "",
         globalstatus = false,

@@ -255,15 +255,6 @@ if packer_status_ok then
       disable = not config.enabled.gitsigns,
     },
 
-    -- Start screen
-    {
-      "glepnir/dashboard-nvim",
-      config = function()
-        require("configs.dashboard").config()
-      end,
-      disable = not config.enabled.dashboard,
-    },
-
     -- Color highlighting
     {
       "norcalli/nvim-colorizer.lua",
