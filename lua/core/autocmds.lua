@@ -16,57 +16,6 @@ cmd("BufWritePost", {
   pattern = "plugins.lua",
 })
 
-augroup("cursor_off", {})
-cmd("WinLeave", {
-  desc = "No cursorline",
-  group = "cursor_off",
-  command = "set nocursorline",
-})
-cmd("WinEnter", {
-  desc = "No cursorline",
-  group = "cursor_off",
-  command = "set cursorline",
-})
-
-vim.g.t_old_cursorline = vim.o.cursorline
-vim.g.t_old_laststatus = vim.o.laststatus
-
-if utils.is_available "dashboard-nvim" then
-  augroup("dashboard_settings", {})
-  if utils.is_available "bufferline.nvim" then
-    cmd("FileType", {
-      desc = "Disable tabline for dashboard",
-      group = "dashboard_settings",
-      pattern = "dashboard",
-      command = "set showtabline=0",
-    })
-    cmd("BufWinLeave", {
-      desc = "Reenable tabline when leaving dashboard",
-      group = "dashboard_settings",
-      pattern = "<buffer>",
-      command = "set showtabline=2",
-    })
-  end
-  cmd("FileType", {
-    desc = "Disable statusline for dashboard",
-    group = "dashboard_settings",
-    pattern = "dashboard",
-    command = "let g:t_old_laststatus = &laststatus | set laststatus=0",
-  })
-  cmd("BufWinLeave", {
-    desc = "Reenable statusline/cursorline when leaving dashboard",
-    group = "dashboard_settings",
-    pattern = "<buffer>",
-    command = "let &laststatus = g:t_old_laststatus | let &cursorline = g:t_old_cursorline",
-  })
-  cmd("BufEnter", {
-    desc = "No cursorline on dashboard",
-    group = "dashboard_settings",
-    pattern = "*",
-    command = "if &ft is 'dashboard' | let g:t_old_cursorline = &cursorline | set nocursorline | endif",
-  })
-end
-
 if utils.is_available "vim-fswitch" then
   augroup("fswitch_settings", {})
   cmd("BufEnter", {
