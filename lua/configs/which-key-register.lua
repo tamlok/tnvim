@@ -60,6 +60,7 @@ if status_ok then
       name = "LSP",
       a = { vim.lsp.buf.code_action, "Code Action" },
       o = { vim.diagnostic.open_float, "Hover Diagnostic" },
+      q = { vim.diagnostic.hide, "Hide Diagnostic" },
       f = { vim.lsp.buf.formatting_sync, "Format" },
       D = { vim.lsp.buf.declaration, "Go to declaration" },
       d = { vim.lsp.buf.definition, "Go to definition" },
