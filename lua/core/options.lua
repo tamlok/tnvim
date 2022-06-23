@@ -20,7 +20,7 @@ set.foldlevelstart = 10
 set.foldnestmax = 10
 
 -- Do not scan included files in <C-P> completion.
--- set.complete = set.complete - {"i"}
+set.complete = set.complete - {"t"}
 set.completeopt = { "menuone", "preview" } -- Options for insert mode completion
 set.backup = false -- Disable making a backup file
 set.expandtab = true -- Enable the use of space in tab
