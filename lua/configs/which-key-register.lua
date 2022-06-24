@@ -119,6 +119,7 @@ if status_ok then
         end,
         "Toggle location list"
       },
+      t = { "<cmd>tabclose<CR>", "Close tab" },
     },
   }
 
@@ -210,6 +211,12 @@ if status_ok then
       end,
       "Diff",
     }
+  end
+
+  if utils.is_available "diffview.nvim" then
+      mappings.g.v = { "<cmd>DiffviewOpen<CR>", "Git diff view" }
+      mappings.g.f = { "<cmd>DiffviewFocusFiles<CR>", "Focus the files panel of diff view" }
+      mappings.g.y = { "<cmd>DiffviewFileHistory %<CR>", "View history of current buffer" }
   end
 
   if utils.is_available "nvim-toggleterm.lua" then

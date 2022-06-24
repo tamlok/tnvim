@@ -25,7 +25,6 @@ local config = {
     gitsigns = true,
     colorizer = true,
     toggle_term = true,
-    comment = true,
     which_key = true,
     ts_rainbow = true,
     ts_autotag = true,

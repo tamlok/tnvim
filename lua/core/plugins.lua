@@ -285,16 +285,6 @@ if packer_status_ok then
       disable = not config.enabled.toggle_term,
     },
 
-    -- Commenting
-    {
-      "numToStr/Comment.nvim",
-      event = { "BufRead", "BufNewFile" },
-      config = function()
-        require("configs.comment").config()
-      end,
-      disable = not config.enabled.comment,
-    },
-
     -- Keymaps popup
     {
       "folke/which-key.nvim",
@@ -421,6 +411,14 @@ if packer_status_ok then
       end,
       disable = true,
     },
+
+    -- Git
+    {
+      "sindrets/diffview.nvim",
+      after = "plenary.nvim",
+      config = function()
+      end,
+    }
   }
 
   packer.startup {
