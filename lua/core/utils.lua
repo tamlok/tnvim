@@ -239,33 +239,15 @@ function M.install_scoop()
     return
   end
 
-  vim.notify("Installing Scoop.", "info", M.base_notification)
+  vim.fn.system('powershell.exe -noexit -Command "Set-ExecutionPolicy RemoteSigned"')
 
-  local Job = require "plenary.job"
-  Job
-    :new({
-      command = "powershell.exe",
-      args = { "-noexit", "-Command", "iwr -useb get.scoop.sh | iex" },
-      cwd = vim.fn.stdpath "config",
-      on_exit = function(_, return_val)
-        if return_val == 0 then
-          vim.notify("Scoop installed.", "info", M.base_notification)
-        else
-          vim.notify("Failed to install Scoop. Run 'iwr -useb get.scoop.sh | iex' manually.",
-                     "error",
-                     M.base_notification)
-        end
-      end,
-    })
-    :sync()
+  vim.fn.system('powershell.exe -noexit -Command "iwr -useb get.scoop.sh | iex"')
 end
 
 function M.install_utils()
   if M.get_os() ~= "win" then
     return
   end
-
-  vim.notify("Installing utils.", "info", M.base_notification)
 
   vim.fn.system {
     "scoop.cmd",
@@ -274,61 +256,15 @@ function M.install_utils()
     "extras"
   }
 
-  local Job = require "plenary.job"
-  Job
-    :new({
-      command = "scoop.cmd",
-      args = { "install", "python", "global", "ripgrep", "universal-ctags" },
-      cwd = vim.fn.stdpath "config",
-      on_exit = function(_, return_val)
-        if return_val == 0 then
-          vim.notify("Utils installed via Scoop.", "info", M.base_notification)
-        else
-          vim.notify("Failed to install utils.", "error", M.base_notification)
-        end
-      end,
-    })
-    :sync()
+  vim.cmd("AsyncRun scoop.cmd install global ripgrep universal-ctags")
 end
 
 function M.install_pynvim()
-  vim.notify("Installing pynvim.", "info", M.base_notification)
-
-  local Job = require "plenary.job"
-  Job
-    :new({
-      command = "python3",
-      args = { "-m", "pip", "install", "--user", "--upgrade", "pynvim" },
-      cwd = vim.fn.stdpath "config",
-      on_exit = function(_, return_val)
-        if return_val == 0 then
-          vim.notify("Pynvim installed.", "info", M.base_notification)
-        else
-          vim.notify("Failed to install pynvim.", "error", M.base_notification)
-        end
-      end,
-    })
-    :sync()
+  vim.cmd("AsyncRun python3 -m pip install --user --upgrade pynvim")
 end
 
 function M.install_llvm()
-  vim.notify("Installing LLVM.", "info", M.base_notification)
-
-  local Job = require "plenary.job"
-  Job
-    :new({
-      command = "scoop.cmd",
-      args = { "install", "llvm" },
-      cwd = vim.fn.stdpath "config",
-      on_exit = function(_, return_val)
-        if return_val == 0 then
-          vim.notify("LLVM installed.", "info", M.base_notification)
-        else
-          vim.notify("Failed to install LLVM.", "error", M.base_notification)
-        end
-      end,
-    })
-    :sync()
+  vim.cmd("AsyncRun scoop.cmd install llvm")
 end
 
 function M.get_cword()
