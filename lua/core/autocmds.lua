@@ -63,6 +63,13 @@ cmd("InsertLeave", {
   command = "match ExtraWhitespace /\\s\\+$/",
 })
 
+cmd("FileType", {
+  desc = "Set format options",
+  pattern = "*",
+  group = "buffer_cmd",
+  command = "setlocal formatoptions-=cro",
+})
+
 create_command("TVTab",
   function(opts)
     require("core.utils").set_tab_stop_width(tonumber(opts.args))
