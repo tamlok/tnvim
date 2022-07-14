@@ -383,12 +383,6 @@ if packer_status_ok then
       end,
     },
 
-    -- Switch Header/Implementation file
-    {
-      "derekwyatt/vim-fswitch",
-      cmd = "FSHere",
-    },
-
     -- CTags and GTags
     {
       "tamlok/vim-gutentags",

@@ -52,8 +52,9 @@ if status_ok then
     },
 
     h = {
-      name = "Highlight/FSwitch",
+      name = "Highlight",
       h = { "<cmd>nohlsearch<CR>", "No Highlight" },
+      i = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch between heder and implementation file" }
     },
 
     l = {
@@ -133,10 +134,6 @@ if status_ok then
                      "Search word under cursor in CPlusPlus" }
     mappings.s.q = { "<cmd>call openbrowser#smart_search(expand('<cword>'), 'qt')<CR>",
                      "Search word under cursor in Qt docs" }
-  end
-
-  if utils.is_available "vim-fswitch" then
-    mappings.h.i = { "<cmd>FSHere<CR>", "Switch between heder and implementation file" }
   end
 
   if utils.is_available "symbols-outline.nvim" then
