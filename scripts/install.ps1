@@ -18,8 +18,6 @@ function Main
 
     Print-Usage
 
-    . '.\install_font.ps1'
-
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     $action = Get-Action
@@ -27,8 +25,7 @@ function Main
     switch ($action) {
         1 { Install-Neovim }
         2 { Setup-Neovim }
-        3 { Install-Fonts }
-        4 { Write-Host 'Bye!'; exit 0 }
+        3 { Write-Host 'Bye!'; exit 0 }
         default {Write-Error 'Invalid action'; exit -1}
     }
 }
@@ -46,8 +43,7 @@ function Get-Action
     Write-Host 'Actions:'
     Write-Host '1. Install Neovim'
     Write-Host '2. Setup Neovim'
-    Write-Host '3. Install fonts'
-    Write-Host '4. Exit'
+    Write-Host '3. Exit'
     Write-Host ''
 
     $action = Read-Host -Prompt 'Please choose the right action to perform'
@@ -70,7 +66,7 @@ function Install-Neovim
     Write-Host 'Downloading latest Neovim...'
 
     $targetZipFile = $env:TEMP + '\' + $release.File
-    Invoke-WebRequest -Uri $release.Url -OutFile $targetZipFile -UseBasicParsing 
+    Invoke-WebRequest -Uri $release.Url -OutFile $targetZipFile -UseBasicParsing
 
     $targetFolder = $targetLocation + '\nvim-win64'
     if (Test-Path -Path $targetFolder) {
@@ -234,13 +230,7 @@ function Do-Setup-Neovim
 {
     param([string]$binFolder, [string]$filesFolder, [string]$utilsFolder)
 
-    if (Test-Path -Path $filesFolder) {
-        Write-Host "NeoVim configs folder $filesFolder exists and will be removed"
-
-        Remove-Directory-Recursively $filesFolder
-    }
-
-    robocopy ".\" "$filesFolder" /E /MT /XD .git /XD fonts > $null
+    robocopy ".\" "$filesFolder" /PURGE /E /MT /XD .git > $null
 }
 
 function Check-Admin
@@ -263,12 +253,6 @@ function Check-Admin
         Start-Process powershell.exe -Verb RunAs -ArgumentList $arguments
         exit 0
     }
-}
-
-function Install-Fonts
-{
-    $fontFolder = (Get-Item '.\fonts').FullName
-    Install-Font "$fontFolder"
 }
 
 Main
