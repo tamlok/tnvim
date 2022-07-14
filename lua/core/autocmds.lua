@@ -63,10 +63,6 @@ cmd("InsertLeave", {
   command = "match ExtraWhitespace /\\s\\+$/",
 })
 
-create_command("TVScoop", require("core.utils").install_scoop, { desc = "Install Scoop on Windows" })
-create_command("TVUtils", require("core.utils").install_utils, { desc = "Install utils like ripgrep/ctags/global" })
-create_command("TVPynvim", require("core.utils").install_pynvim, { desc = "Install Pynvim" })
-create_command("TVLlvm", require("core.utils").install_llvm, { desc = "Install LLVM" })
 create_command("TVTab",
   function(opts)
     require("core.utils").set_tab_stop_width(tonumber(opts.args))

@@ -234,39 +234,6 @@ function M.get_os()
   return "linux"
 end
 
-function M.install_scoop()
-  if M.get_os() ~= "win" then
-    return
-  end
-
-  vim.fn.system('powershell.exe -noexit -Command "Set-ExecutionPolicy RemoteSigned"')
-
-  vim.fn.system('powershell.exe -noexit -Command "iwr -useb get.scoop.sh | iex"')
-end
-
-function M.install_utils()
-  if M.get_os() ~= "win" then
-    return
-  end
-
-  vim.fn.system {
-    "scoop.cmd",
-    "bucket",
-    "add",
-    "extras"
-  }
-
-  vim.cmd("AsyncRun scoop.cmd install global ripgrep universal-ctags")
-end
-
-function M.install_pynvim()
-  vim.cmd("AsyncRun python3 -m pip install --user --upgrade pynvim")
-end
-
-function M.install_llvm()
-  vim.cmd("AsyncRun scoop.cmd install llvm")
-end
-
 function M.get_cword()
   return vim.call("expand", "<cword>")
 end
