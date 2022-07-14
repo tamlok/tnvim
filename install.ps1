@@ -230,7 +230,7 @@ function Do-Setup-Neovim
 {
     param([string]$binFolder, [string]$filesFolder, [string]$utilsFolder)
 
-    robocopy ".\" "$filesFolder" /PURGE /E /MT /XD .git > $null
+    robocopy ".\" "$filesFolder" /E /MT /XD .git > $null
 }
 
 function Check-Admin
