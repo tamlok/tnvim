@@ -256,7 +256,7 @@ function M.zoom_restore_current_window()
     vim.cmd("execute t:zoom_winresetcmd")
     vim.t.zoomed = false
   else
-    vim.t.zoom_winresetcmd = vim.call(winrestcmd)
+    vim.t.zoom_winresetcmd = vim.fn.winrestcmd()
     vim.cmd("resize")
     vim.cmd("vertical resize")
     vim.t.zoomed = true
