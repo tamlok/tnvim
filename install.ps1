@@ -203,14 +203,15 @@ function Setup-Neovim
     Write-Host ''
     Write-Host '==Setup Neovim=='
 
-    $vimBinFolder = Get-Neovim-Folder
+    $vimBinFolder = Get-Neovim-Bin-Folder
+    $vimFolder = (Get-Item "$vimBinFolder").Parent.FullName
     $vimFilesFolder = $env:USERPROFILE + '\AppData\Local\nvim'
     $vimUtilsFolder = (Get-Item "$vimBinFolder").Parent.FullName + '\share\nvim\runtime\tnvim_utils'
 
-    Do-Setup-Neovim $vimBinFolder $vimFilesFolder $vimUtilsFolder
+    Do-Setup-Neovim $vimFolder $vimFilesFolder $vimUtilsFolder
 }
 
-function Get-Neovim-Folder
+function Get-Neovim-Bin-Folder
 {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 
@@ -228,9 +229,13 @@ function Get-Neovim-Folder
 
 function Do-Setup-Neovim
 {
-    param([string]$binFolder, [string]$filesFolder, [string]$utilsFolder)
+    param([string]$vimFolder, [string]$filesFolder, [string]$utilsFolder)
 
     robocopy ".\" "$filesFolder" /E /MT /XD .git > $null
+
+    Add-Nvim-Bat $vimFolder
+
+    Add-Neovim-To-Context-Menu $vimFolder
 }
 
 function Check-Admin
