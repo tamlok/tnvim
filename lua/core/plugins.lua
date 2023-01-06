@@ -47,15 +47,6 @@ if packer_status_ok then
     -- Popup API
     { "nvim-lua/popup.nvim" },
 
-    -- Indent detection
-    {
-      "Darazaki/indent-o-matic",
-      event = "BufRead",
-      config = function()
-        require("configs.indent-o-matic").config()
-      end,
-    },
-
     -- Notification Enhancer
     {
       "rcarriga/nvim-notify",
