@@ -5,6 +5,7 @@
 # We use scoop to manage neovim binary.
 function Setup-Neovim
 {
+    Write-Host "Setup NeoVim"
     $filesFolder = $env:USERPROFILE + '\AppData\Local\nvim'
     robocopy ".\" "$filesFolder" /E /MT /XD .git /XF .git* > $null
 }
