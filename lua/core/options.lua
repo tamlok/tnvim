@@ -79,7 +79,7 @@ set.title = true
 -- Display current mode in the message line
 set.showmode = true
 
-set.cscopequickfix = {"s-", "c-", "d-", "i-", "t-", "e-"}
+set.autoread = false
 
 g.do_filetype_lua = 1 -- use filetype.lua
 g.did_load_filetypes = 0 -- don't use filetype.vim
