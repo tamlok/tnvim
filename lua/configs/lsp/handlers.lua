@@ -42,7 +42,7 @@ function M.setup()
 end
 
 local function lsp_highlight_document(client)
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
       augroup lsp_document_highlight
@@ -58,13 +58,13 @@ end
 
 M.on_attach = function(client, bufnr)
   if client.name == "tsserver" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
   elseif client.name == "jsonls" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
   elseif client.name == "html" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
   elseif client.name == "sumneko_lua" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
   end
 
   local on_attach_override = require("core.utils").user_plugin_opts "lsp.on_attach"

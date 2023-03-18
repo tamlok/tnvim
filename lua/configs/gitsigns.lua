@@ -11,6 +11,10 @@ function M.config()
         topdelete = { text = "契" },
         changedelete = { text = "▎" },
       },
+      signcolumn = false,
+      watch_gitdir = {
+          enable = false,
+      },
     }))
   end
 end
