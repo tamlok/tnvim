@@ -20,16 +20,17 @@ if packer_status_ok then
         vim.g.edge_better_performance = true
         vim.cmd "colorscheme edge"
       end,
-      disable = false,
+      disable = true,
     },
 
     {
-      "EdenEast/nightfox.nvim",
+      "tamlok/detorte",
       config = function()
         vim.o.background = 'light'
-        vim.cmd "colorscheme dawnfox"
+        vim.g.detorte_theme_mode = 'light'
+        vim.cmd "colorscheme detorte"
       end,
-      disable = true,
+      disable = false,
     },
 
     -- Optimiser
