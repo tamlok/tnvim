@@ -13,12 +13,10 @@ if packer_status_ok then
 
     -- Colorschemes
     {
-      "sainnhe/edge",
+      "NLKNguyen/papercolor-theme",
       config = function()
         vim.o.background = 'light'
-        vim.g.edge_style = 'default'
-        vim.g.edge_better_performance = true
-        vim.cmd "colorscheme edge"
+        vim.cmd "colorscheme PaperColor"
       end,
       disable = false,
     },
