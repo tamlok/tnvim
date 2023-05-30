@@ -36,12 +36,6 @@ if packer_status_ok then
     -- Optimiser
     { "lewis6991/impatient.nvim" },
 
-    { "nathom/filetype.nvim",
-      config = function()
-        require("configs.filetype").config()
-      end,
-    },
-
     -- Lua functions
     { "nvim-lua/plenary.nvim" },
 

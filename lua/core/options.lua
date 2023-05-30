@@ -81,9 +81,6 @@ set.showmode = true
 
 set.autoread = false
 
-g.do_filetype_lua = 1 -- use filetype.lua
-g.did_load_filetypes = 0 -- don't use filetype.vim
-
 if vim.fn.exists("g:neovide") then
     local gui_font_size = '13'
     vim.cmd("set guifont=SauceCodePro\\ Nerd\\ Font:h" .. gui_font_size)
