@@ -81,7 +81,7 @@ set.showmode = true
 
 set.autoread = false
 
-if vim.fn.exists("g:neovide") then
+if vim.fn.exists("g:neovide") or vim.fn.exists("g:nvy") then
     local gui_font_size = '13'
     vim.cmd("set guifont=SauceCodePro\\ Nerd\\ Font:h" .. gui_font_size)
 end

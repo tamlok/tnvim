@@ -41,6 +41,10 @@ if utils.is_available "smart-splits.nvim" then
   end)
 end
 
+if vim.fn.exists("g:neovide") or vim.fn.exists("g:nvy") then
+    map("n", "<C-6>", "<C-^>")
+end
+
 -- Function Keys
 map("n", "<F2>", function()
   utils.set_cwd_to_current_file()
