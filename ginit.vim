@@ -1,9 +1,16 @@
-GuiTabline 0
-GuiPopupmenu 0
+silent! GuiTabline 0
+silent! GuiPopupmenu 0
 
-let s:gui_font_size = '13'
-
-execute 'GuiFont! SauceCodePro Nerd Font:h' . s:gui_font_size
+if exists('g:fvim_loaded')
+    " good old 'set guifont' compatibility with HiDPI hints...
+    if g:fvim_os == 'windows' || g:fvim_render_scale > 1.0
+      set guifont=SauceCodePro\ Nerd\ Font:h18
+    else
+      set guifont=SauceCodePro\ Nerd\ Font:h26
+    endif
+else
+    execute 'GuiFont! SauceCodePro Nerd Font:h13'
+endif
 
 set guicursor=a:block
 set guicursor+=o:hor50-Cursor
