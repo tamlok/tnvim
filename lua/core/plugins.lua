@@ -23,19 +23,6 @@ if packer_status_ok then
       disable = false,
     },
 
-    {
-      "tamlok/detorte",
-      config = function()
-        vim.o.background = 'light'
-        vim.g.detorte_theme_mode = 'light'
-        vim.cmd "colorscheme detorte"
-      end,
-      disable = true,
-    },
-
-    -- Optimiser
-    { "lewis6991/impatient.nvim" },
-
     -- Lua functions
     { "nvim-lua/plenary.nvim" },
 
@@ -62,15 +49,6 @@ if packer_status_ok then
       event = { "BufRead", "BufNewFile" },
       config = function()
         vim.g.cursorhold_updatetime = 100
-      end,
-    },
-
-    -- Smarter Splits
-    {
-      "mrjones2014/smart-splits.nvim",
-      module = "smart-splits",
-      config = function()
-        require("configs.smart-splits").config()
       end,
     },
 
