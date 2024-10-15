@@ -228,8 +228,8 @@ function M.which_key_register()
   if M.which_key_queue then
     local wk_avail, wk = pcall(require, "which-key")
     if wk_avail then
-      for mode, registration in pairs(M.which_key_queue) do
-        wk.register(registration, { mode = mode })
+      for _, registration in ipairs(M.which_key_queue) do
+        wk.add(registration)
       end
       M.which_key_queue = nil
     end
@@ -269,11 +269,11 @@ function M.set_mappings(map_table, base)
           keymap_opts = vim.tbl_deep_extend("force", keymap_opts, options)
           keymap_opts[1] = nil
         end
-        if not cmd or keymap_opts.name then -- if which-key mapping, queue it
-          if not keymap_opts.name then keymap_opts.name = keymap_opts.desc end
+        if not cmd then -- if which-key mapping, queue it
           if not M.which_key_queue then M.which_key_queue = {} end
-          if not M.which_key_queue[mode] then M.which_key_queue[mode] = {} end
-          M.which_key_queue[mode][keymap] = keymap_opts
+          keymap_opts[1] = keymap;
+          keymap_opts.mode = mode;
+          M.which_key_queue[#M.which_key_queue + 1] = keymap_opts
         else -- if not which-key mapping, set it
           vim.keymap.set(mode, keymap, cmd, keymap_opts)
         end

@@ -7,19 +7,20 @@ local ui = require "astronvim.utils.ui"
 local maps = require("astronvim.utils").empty_map_table()
 
 local sections = {
-  f = { desc = get_icon("Search", 1, true) .. "Find" },
-  P = { desc = get_icon("Package", 1, true) .. "Packages" },
-  l = { desc = get_icon("ActiveLSP", 1, true) .. "LSP" },
-  u = { desc = get_icon("Window", 1, true) .. "UI/UX" },
-  d = { desc = get_icon("Debugger", 1, true) .. "Debugger" },
-  g = { desc = get_icon("Git", 1, true) .. "Git" },
+  f = { desc = "Find" },
+  P = { desc = "Packages" },
+  l = { desc = "LSP" },
+  u = { desc = "UI/UX" },
+  d = { desc = "Debugger" },
+  g = { desc = "Git" },
   -- S = { desc = get_icon("Session", 1, true) .. "Session" },
-  t = { desc = get_icon("Terminal", 1, true) .. "Terminal" },
-  w = { desc = get_icon("Window", 1, true) .. "Windows" },
-  r = { desc = get_icon("Run", 1, true) .. "Run" },
+  t = { desc = "Terminal" },
+  w = { desc = "Windows" },
+  r = { desc = "Run" },
 }
 
 -- Windows management
+maps.n["<leader>w"] = sections.w
 maps.n["<leader>ww"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>wq"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>wQ"] = { "<cmd>confirm qall<cr>", desc = "Quit all" }
