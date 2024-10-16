@@ -33,7 +33,8 @@ return {
     config = require "plugins.configs.lualine"
   },
 
-  { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
+  -- Not working if lazy loaded.
+  { "NMAC427/guess-indent.nvim", lazy = false, config = require "plugins.configs.guess-indent" },
 
   {
     "s1n7ax/nvim-window-picker",
