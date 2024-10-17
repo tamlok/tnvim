@@ -6,5 +6,4 @@ return function(_, opts)
   conditional_func(telescope.load_extension, pcall(require, "notify"), "notify")
   conditional_func(telescope.load_extension, pcall(require, "aerial"), "aerial")
   conditional_func(telescope.load_extension, utils.is_available "telescope-fzf-native.nvim", "fzf")
-  conditional_func(telescope.load_extension, utils.is_available "telescope-zf-native.nvim", "zf-native")
 end

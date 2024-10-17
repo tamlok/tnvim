@@ -2,8 +2,11 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
-      -- { "nvim-telescope/telescope-fzf-native.nvim", enabled = vim.fn.executable "make" == 1, build = "make" },
-      { "natecraddock/telescope-zf-native.nvim", },
+      {
+          "nvim-telescope/telescope-fzf-native.nvim",
+          enabled = vim.fn.executable "cmake" == 1,
+          build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
+      },
     },
     cmd = "Telescope",
     opts = function()
