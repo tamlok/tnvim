@@ -212,6 +212,7 @@ if is_available "telescope.nvim" then
     function() require("telescope.builtin").find_files { previewer = false, hidden = true, no_ignore = true } end,
     desc = "Find all files",
   }
+  maps.n["<leader>fd"] = { function() require("telescope.builtin").find_files({ previewer = true, cwd = require("telescope.utils").buffer_dir() }) end, desc = "Find files related to open buffer" }
   maps.n["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find help" }
   maps.n["<leader>fm"] = { function() require("telescope.builtin").man_pages() end, desc = "Find man" }
   if is_available "nvim-notify" then
