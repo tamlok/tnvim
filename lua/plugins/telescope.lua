@@ -3,7 +3,7 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       {
-          "nvim-telescope/telescope-fzf-native.nvim",
+          "tamlok/telescope-fzf-native.nvim",
           enabled = vim.fn.executable "cmake" == 1,
           build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
       },
