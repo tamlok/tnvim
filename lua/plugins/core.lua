@@ -248,5 +248,7 @@ return {
   -- Git
   {
     "sindrets/diffview.nvim",
+    enabled = true,
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" }
   }
 }
