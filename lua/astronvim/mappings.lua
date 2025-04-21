@@ -184,10 +184,13 @@ if is_available "aerial.nvim" then
   maps.n["<leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
 end
 
+-- DiffView
+maps.n["<leader>g"] = sections.g
+maps.n["<leader>gd"] = { "<cmd>DiffviewOpen<cr>", desc = "Git diff" }
+
 -- Telescope
 if is_available "telescope.nvim" then
   maps.n["<leader>f"] = sections.f
-  maps.n["<leader>g"] = sections.g
   maps.n["<leader>gb"] =
     { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
   maps.n["<leader>gc"] = {
