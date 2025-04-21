@@ -254,7 +254,7 @@ autocmd("TabLeave", {
 autocmd("InsertLeave", {
   desc = "Disable input method",
   group = "buffer_cmd",
-  command = "set imdisable | set iminsert=0",
+  command = "silent! set imdisable | set iminsert=0",
 })
 autocmd("InsertEnter", {
   desc = "Enable input method",

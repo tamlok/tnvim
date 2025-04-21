@@ -35,7 +35,7 @@ end
 function M.lsp_name(opts)
   opts = utils.extend_tbl({ expand_null_ls = true, truncate = 0.25 }, opts)
   local buf_client_names = {}
-  for _, client in pairs(vim.lsp.get_active_clients { bufnr = self and self.bufnr or 0 }) do
+  for _, client in pairs(vim.lsp.get_clients { bufnr = self and self.bufnr or 0 }) do
       if client.name == "null-ls" and opts.expand_null_ls then
           local null_ls_sources = {}
           for _, type in ipairs { "FORMATTING", "DIAGNOSTICS" } do

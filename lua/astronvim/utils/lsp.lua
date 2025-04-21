@@ -82,7 +82,7 @@ end
 
 --- Helper function to check if any active LSP clients given a filter provide a specific capability
 ---@param capability string The server capability to check for (example: "documentFormattingProvider")
----@param filter vim.lsp.get_active_clients.filter|nil (table|nil) A table with
+---@param filter vim.lsp.get_clients.filter|nil (table|nil) A table with
 ---              key-value pairs used to filter the returned clients.
 ---              The available keys are:
 ---               - id (number): Only return clients with the given id
@@ -90,7 +90,7 @@ end
 ---               - name (string): Only return clients with the given name
 ---@return boolean # Whether or not any of the clients provide the capability
 function M.has_capability(capability, filter)
-  for _, client in ipairs(vim.lsp.get_active_clients(filter)) do
+  for _, client in ipairs(vim.lsp.get_clients(filter)) do
     if client.supports_method(capability) then return true end
   end
   return false
@@ -364,7 +364,7 @@ M.on_attach = function(client, bufnr)
   utils.set_mappings(lsp_mappings, { buffer = bufnr })
 
   for id, _ in pairs(astronvim.lsp.progress) do -- clear lingering progress messages
-    if not next(vim.lsp.get_active_clients { id = tonumber(id:match "^%d+") }) then astronvim.lsp.progress[id] = nil end
+    if not next(vim.lsp.get_clients { id = tonumber(id:match "^%d+") }) then astronvim.lsp.progress[id] = nil end
   end
 end
 

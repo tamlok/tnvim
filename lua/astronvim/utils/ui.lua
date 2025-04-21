@@ -94,7 +94,7 @@ function M.toggle_buffer_semantic_tokens(bufnr, silent)
   bufnr = bufnr or 0
   vim.b[bufnr].semantic_tokens_enabled = not vim.b[bufnr].semantic_tokens_enabled
   local toggled = false
-  for _, client in ipairs(vim.lsp.get_active_clients { bufnr = bufnr }) do
+  for _, client in ipairs(vim.lsp.get_clients { bufnr = bufnr }) do
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens[vim.b[bufnr].semantic_tokens_enabled and "start" or "stop"](bufnr, client.id)
       toggled = true
